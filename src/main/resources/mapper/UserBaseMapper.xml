@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.play.springboot.mapper.UserBaseMapper" >
+    <resultMap id="BaseResultMap" type="com.play.springboot.entity.UserBase" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="deleted" property="deleted" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+        username, password, deleted
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap"  >
+       SELECT 
+       <include refid="Base_Column_List" />
+	   FROM user_base
+    </select>
+
+    <select id="getOne" parameterType="java.lang.Long" resultMap="BaseResultMap" >
+        SELECT 
+       <include refid="Base_Column_List" />
+	   FROM user_base
+	   WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.play.springboot.entity.UserBase" >
+       INSERT INTO 
+       		user_base
+       		(username,password,deleted) 
+       	VALUES
+       		(#{username}, #{password}, #{deleted})
+    </insert>
+    
+    <update id="update" parameterType="com.play.springboot.entity.UserBase" >
+       UPDATE 
+       		user_base 
+       <set>
+       	<if test="username != null">username = #{username},</if>
+       	<if test="password != null">password = #{password},</if>
+       	<if test="deleted != null">deleted = #{deleted},</if>
+       	</set>
+       WHERE 
+       		username = #{username}
+    </update>
+    
+    <delete id="delete" parameterType="java.lang.String" >
+       DELETE FROM
+       		 user_base 
+       WHERE 
+       		username = #{username}
+    </delete>
+
+</mapper>
